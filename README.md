@@ -5,12 +5,15 @@
 ## Setup
 
 1.  Create a [new personal access token](https://github.com/settings/tokens/new)
-    which has the `gist` scope. Save your token to
-    `config.syncSettings.personalAccessToken` inside `~/.hyperterm.js`.
+    which has the `gist` scope. Save your token to `personalAccessToken` inside
+    `~/.hyperterm_plugins/.hyperterm-sync-settings.json`. Alternatively, set the
+    `HYPERTERM_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN` environmental variable using
+    this token.
 
 2.  Create a [new gist](https://gist.github.com/) and save it. Save your gist id
-    (last part of the url after the username) to `config.syncSettings.gistId`
-    inside `~/.hyperterm.js`.
+    (last part of the url after the username) to `gistId` inside
+    `~/.hyperterm_plugins/.hyperterm-sync-settings.json`. Alternatively, set the
+    `HYPERTERM_SYNC_SETTINGS_GIST_ID` environmental variable using this id.
 
 3.  Restart HyperTerm.
 

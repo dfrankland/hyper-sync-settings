@@ -1,25 +1,19 @@
-const getConfig = require('./lib/getConfig');
 const getNotify = require('./lib/getNotify');
 const getGitConfig = require('./lib/getGitConfig');
 const restore = require('./lib/restore');
 const backup = require('./lib/backup');
-
-let config = {};
-exports.decorateConfig = getConfig(syncConfig => {
-  if (syncConfig) config = syncConfig;
-});
 
 let notify = () => console.error('hyperterm-sync-settings: error 🔥 `notify` function not set.');
 exports.onWindow = getNotify(notifier => {
   if (notifier) notify = notifier;
 });
 
-let gitConfig;
+let config;
 const checkForMissingSettings = () => {
+  config = getGitConfig();
   const { personalAccessToken, gistId } = config;
-  if (personalAccessToken && gistId) {
-    if (!gitConfig) gitConfig = getGitConfig(config);
 
+  if (personalAccessToken && gistId) {
     return true;
   } else {
     if (!personalAccessToken && !gistId) {
@@ -50,7 +44,7 @@ exports.decorateMenu = menu => {
           accelerator: 'CmdOrCtrl+Shift+B',
           click: () => {
             if (!checkForMissingSettings()) return;
-            backup(gitConfig)
+            backup(config)
               .then(
                 () => notify('hyperterm-sync-settings 🔜', 'Your settings have been saved.')
               )
@@ -67,7 +61,7 @@ exports.decorateMenu = menu => {
           accelerator: 'CmdOrCtrl+Shift+R',
           click: () => {
             if (!checkForMissingSettings()) return;
-            restore(gitConfig)
+            restore(config)
               .then(
                 () => notify('hyperterm-sync-settings 🔙', 'Your settings have been restored.')
               )
