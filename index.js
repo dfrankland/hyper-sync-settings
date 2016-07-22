@@ -69,7 +69,11 @@ exports.decorateMenu = menu => {
                 if (!checkForMissingSettings()) return;
                 backup(config)
                   .then(
-                    () => notify(`${title} 🔜`, 'Your settings have been saved.')
+                    () => notify(
+                      `${title} 🔜`,
+                      'Your settings have been saved.',
+                      config.url
+                    )
                   )
                   .catch(catchError);
               },
@@ -80,7 +84,11 @@ exports.decorateMenu = menu => {
                 if (!checkForMissingSettings()) return;
                 restore(config)
                   .then(
-                    () => notify(`${title} 🔙`, 'Your settings have been restored.')
+                    () => notify(
+                      `${title} 🔙`,
+                      'Your settings have been restored.',
+                      config.url
+                    )
                   )
                   .catch(catchError);
               },
