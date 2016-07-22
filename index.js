@@ -68,28 +68,32 @@ exports.decorateMenu = menu => {
       const newItem = Object.assign({}, item);
       newItem.submenu = newItem.submenu.concat(
         {
-          label: 'Sync Settings: Backup',
-          accelerator: 'CmdOrCtrl+Shift+B',
-          click: () => {
-            if (!checkForMissingSettings()) return;
-            backup(config)
-              .then(
-                () => notify(`${title} 🔜`, 'Your settings have been saved.')
-              )
-              .catch(catchError);
-          },
-        },
-        {
-          label: 'Sync Settings: Restore',
-          accelerator: 'CmdOrCtrl+Shift+R',
-          click: () => {
-            if (!checkForMissingSettings()) return;
-            restore(config)
-              .then(
-                () => notify(`${title} 🔙`, 'Your settings have been restored.')
-              )
-              .catch(catchError);
-          },
+          label: 'Sync Settings',
+          type: 'submenu',
+          submenu: [
+            {
+              label: 'Backup',
+              click: () => {
+                if (!checkForMissingSettings()) return;
+                backup(config)
+                  .then(
+                    () => notify(`${title} 🔜`, 'Your settings have been saved.')
+                  )
+                  .catch(catchError);
+              },
+            },
+            {
+              label: 'Restore',
+              click: () => {
+                if (!checkForMissingSettings()) return;
+                restore(config)
+                  .then(
+                    () => notify(`${title} 🔙`, 'Your settings have been restored.')
+                  )
+                  .catch(catchError);
+              },
+            },
+          ],
         }
       );
       return newItem;
