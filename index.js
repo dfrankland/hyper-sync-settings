@@ -3,7 +3,14 @@ const getGitConfig = require('./lib/getGitConfig');
 const restore = require('./lib/restore');
 const backup = require('./lib/backup');
 
-let notify = () => console.error('hyperterm-sync-settings: error 🔥 `notify` function not set.');
+
+const title = 'hyperterm-sync-settings';
+exports.title = title;
+
+const errorTitle = `${title} error 🔥`;
+exports.errorTitle = errorTitle;
+
+let notify = () => console.error(`${errorTitle}: \`notify\` function not set.`);
 exports.onWindow = getNotify(notifier => {
   if (notifier) notify = notifier;
 });
@@ -17,14 +24,14 @@ const checkForMissingSettings = () => {
     return true;
   } else {
     if (!personalAccessToken && !gistId) {
-      notify('hyperterm-sync-settings error 🔥', '`syncSettings` not set!');
+      notify(errorTitle, 'Settings not found! Click for more info.');
     } else {
       if (!personalAccessToken) {
-        notify('hyperterm-sync-settings error 🔥', '`syncSettings.personalAccessToken` not set!');
+        notify(errorTitle, '`personalAccessToken` not set! Click for more info.');
       }
 
       if (!gistId) {
-        notify('hyperterm-sync-settings error 🔥', '`syncSettings.gistId` not set!');
+        notify(errorTitle, '`gistId` not set! Click for more info.');
       }
     }
 
@@ -46,12 +53,12 @@ exports.decorateMenu = menu => {
             if (!checkForMissingSettings()) return;
             backup(config)
               .then(
-                () => notify('hyperterm-sync-settings 🔜', 'Your settings have been saved.')
+                () => notify(`${title} 🔜`, 'Your settings have been saved.')
               )
               .catch(
                 err => {
                   console.trace(err);
-                  notify('hyperterm-sync-settings error 🔥', err);
+                  notify(errorTitle, err);
                 }
               );
           },
@@ -63,12 +70,12 @@ exports.decorateMenu = menu => {
             if (!checkForMissingSettings()) return;
             restore(config)
               .then(
-                () => notify('hyperterm-sync-settings 🔙', 'Your settings have been restored.')
+                () => notify(`${title} 🔙`, 'Your settings have been restored.')
               )
               .catch(
                 err => {
                   console.trace(err);
-                  notify('hyperterm-sync-settings error 🔥', err);
+                  notify(errorTitle, err);
                 }
               );
           },
