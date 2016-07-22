@@ -4,17 +4,12 @@ const restore = require('./lib/restore');
 const backup = require('./lib/backup');
 const constants = require('./lib/constants');
 
-const { title, errorTitle } = constants;
+const { title, errorTitle, setupUrl } = constants;
 
 let notify = () => console.error(`${errorTitle}: \`notify\` function not set.`);
 exports.onWindow = getNotify(notifier => {
   if (notifier) notify = notifier;
 });
-
-const openSetup = `event => {
-  const { shell } = require('electron');
-  shell.openExternal('https://github.com/dfrankland/hyperterm-sync-settings#setup');
-}`;
 
 let config;
 const checkForMissingSettings = () => {
@@ -28,14 +23,14 @@ const checkForMissingSettings = () => {
       notify(
         errorTitle,
         'Settings not found! Click for more info.',
-        openSetup
+        setupUrl
       );
     } else {
       if (!personalAccessToken) {
         notify(
           errorTitle,
           '`personalAccessToken` not set! Click for more info.',
-          openSetup
+          setupUrl
         );
       }
 
@@ -43,7 +38,7 @@ const checkForMissingSettings = () => {
         notify(
           errorTitle,
           '`gistId` not set! Click for more info.',
-          openSetup
+          setupUrl
         );
       }
     }
