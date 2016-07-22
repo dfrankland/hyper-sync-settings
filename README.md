@@ -26,10 +26,22 @@ auth-tokens, a malicious party could abuse them), you should make sure to
 
 ![alt demo](http://i.giphy.com/l0Hlvxk6H8auyhn1e.gif)
 
-To use `hyperterm-sync-settings` simply click on either
-`Plugins > Sync Settings: Backup` or `Plugins > Sync Settings: Restore` in the
-menu. Also, you may use the shortcut combinations `(Cmd or Ctrl) + Shift + B`
-to backup your settings or `(Cmd or Ctrl) + Shift + R` to restore your settings.
+To use `hyperterm-sync-settings` has 3 different commands at your disposal in
+the menu:
+
+1.  `Plugins > Sync Settings > Check for Updates`
+
+    Checks Github to see if there are any updates available for your settings.
+
+2.  `Plugins > Sync Settings > Backup Settings`
+
+    Copies your `~/.hyperterm.js` file to your local repository and pushes it to
+    Github.
+
+3.  `Plugins > Sync Settings > Restore Settings`
+
+    Fast forwards local repo with all new commits from Github and copies the new
+    settings to your `~/.hyperterm.js` file.
 
 ## Contribution
 
