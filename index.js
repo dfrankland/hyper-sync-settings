@@ -1,7 +1,7 @@
 const getOpen = require('./lib/getOpen');
 const getGitConfig = require('./lib/getGitConfig');
 const getCommands = require('./lib/getCommands');
-const { title, errorTitle, setupUrl } = require('./lib/constants');
+const { title, errorTitle, setupUrl, paths, gistUrl } = require('./lib/constants');
 
 let open = {};
 exports.onWindow = win => {
@@ -9,8 +9,9 @@ exports.onWindow = win => {
 };
 
 let commands;
+let config;
 const checkForMissingSettings = () => {
-  const config = getGitConfig();
+  config = getGitConfig();
   const { personalAccessToken, gistId } = config;
 
   if (personalAccessToken && gistId) {
@@ -76,6 +77,30 @@ exports.decorateMenu = menu => {
                 if (!checkForMissingSettings()) return;
                 commands.tryToRestore();
               },
+            },
+            {
+              label: 'Open',
+              type: 'submenu',
+              submenu: [
+                {
+                  label: 'Gist',
+                  click: () => {
+                    open.window(config ? config.url : gistUrl);
+                  },
+                },
+                {
+                  label: 'Repo',
+                  click: () => {
+                    open.item(paths.dirs.repo);
+                  },
+                },
+                {
+                  label: 'Configuration',
+                  click: () => {
+                    open.item(paths.files.config);
+                  },
+                },
+              ],
             },
           ],
         }
