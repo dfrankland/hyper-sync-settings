@@ -1,12 +1,12 @@
-const getNotify = require('./lib/getNotify');
+const getOpen = require('./lib/getOpen');
 const getGitConfig = require('./lib/getGitConfig');
 const getCommands = require('./lib/getCommands');
 const { title, errorTitle, setupUrl } = require('./lib/constants');
 
-let notify = () => console.error(`${errorTitle}: \`notify\` function not set.`);
-exports.onWindow = getNotify(notifier => {
-  if (notifier) notify = notifier;
-});
+let open = {};
+exports.onWindow = win => {
+  open = getOpen(win);
+};
 
 let commands;
 const checkForMissingSettings = () => {
@@ -14,18 +14,18 @@ const checkForMissingSettings = () => {
   const { personalAccessToken, gistId } = config;
 
   if (personalAccessToken && gistId) {
-    commands = getCommands(config, notify);
+    commands = getCommands(config, open.notification);
     return true;
   } else {
     if (!personalAccessToken && !gistId) {
-      notify(
+      open.notification(
         errorTitle,
         'Settings not found! Click for more info.',
         setupUrl
       );
     } else {
       if (!personalAccessToken) {
-        notify(
+        open.notification(
           errorTitle,
           '`personalAccessToken` not set! Click for more info.',
           setupUrl
@@ -33,7 +33,7 @@ const checkForMissingSettings = () => {
       }
 
       if (!gistId) {
-        notify(
+        open.notification(
           errorTitle,
           '`gistId` not set! Click for more info.',
           setupUrl
