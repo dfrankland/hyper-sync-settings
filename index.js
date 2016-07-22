@@ -2,12 +2,9 @@ const getNotify = require('./lib/getNotify');
 const getGitConfig = require('./lib/getGitConfig');
 const restore = require('./lib/restore');
 const backup = require('./lib/backup');
+const constants = require('./lib/constants');
 
-const title = 'hyperterm-sync-settings';
-exports.title = title;
-
-const errorTitle = `${title} error 🔥`;
-exports.errorTitle = errorTitle;
+const { title, errorTitle } = constants;
 
 let notify = () => console.error(`${errorTitle}: \`notify\` function not set.`);
 exports.onWindow = getNotify(notifier => {
