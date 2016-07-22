@@ -26,8 +26,7 @@ auth-tokens, a malicious party could abuse them), you should make sure to
 
 ![alt demo](http://i.giphy.com/l0Hlvxk6H8auyhn1e.gif)
 
-To use `hyperterm-sync-settings` has 3 different commands at your disposal in
-the menu:
+Use the commands below in the menu:
 
 1.  `Plugins > Sync Settings > Check for Updates`
 
@@ -42,6 +41,15 @@ the menu:
 
     Fast forwards local repo with all new commits from Github and copies the new
     settings to your `~/.hyperterm.js` file.
+
+4.  `Plugins > Sync Settings > Open >`
+
+    *   `Gist`: Opens the link to the configured Gist.
+
+    *   `Repo`: Opens the local repo that is cloned from the Gist.
+
+    *   `Configuration`: Opens the
+        `~/.hyperterm_plugins/.hyperterm-sync-settings.json` config file.
 
 ## Contribution
 
