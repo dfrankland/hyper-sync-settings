@@ -64,7 +64,7 @@ exports.decorateMenu = menu => {
           type: 'submenu',
           submenu: [
             {
-              label: 'Backup',
+              label: 'Backup Settings',
               click: () => {
                 if (!checkForMissingSettings()) return;
                 backup(config)
@@ -79,7 +79,7 @@ exports.decorateMenu = menu => {
               },
             },
             {
-              label: 'Restore',
+              label: 'Restore Settings',
               click: () => {
                 if (!checkForMissingSettings()) return;
                 restore(config)
