@@ -24,7 +24,7 @@ auth-tokens, a malicious party could abuse them), you should make sure to
 
 ## How to use
 
-![alt demo](http://i.giphy.com/l0Hlvxk6H8auyhn1e.gif)
+![alt demo](http://i.giphy.com/9CNA0ceu5iuoU.gif)
 
 Use the commands below in the menu:
 
