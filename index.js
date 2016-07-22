@@ -1,5 +1,6 @@
 const getNotify = require('./lib/getNotify');
 const getGitConfig = require('./lib/getGitConfig');
+const updates = require('./lib/updates');
 const restore = require('./lib/restore');
 const backup = require('./lib/backup');
 const constants = require('./lib/constants');
@@ -53,7 +54,28 @@ const catchError = err => {
 };
 
 exports.decorateMenu = menu => {
-  checkForMissingSettings();
+  if (checkForMissingSettings()) {
+    updates(config)
+      .then(
+        isUpdated => {
+          if (isUpdated) {
+            notify(
+              `${title} ❗️`,
+              'Your settings need to be updated.',
+              config.url
+            );
+          } else {
+            notify(
+              `${title} 👍`,
+              'Your settings are up to date.',
+              config.url
+            );
+          }
+        }
+      )
+      .catch(catchError);
+  }
+
   return menu.map(
     item => {
       if (item.label !== 'Plugins') return item;
@@ -63,6 +85,30 @@ exports.decorateMenu = menu => {
           label: 'Sync Settings',
           type: 'submenu',
           submenu: [
+            {
+              label: 'Check for Updates',
+              click: () => {
+                if (!checkForMissingSettings()) return;
+                updates(config)
+                  .then(
+                    isUpdated => {
+                      if (isUpdated) {
+                        notify(
+                          `${title} ❗️`,
+                          'Your settings need to be updated.',
+                          openWindow(config.url)
+                        );
+                      } else {
+                        notify(`${title} 👍`,
+                          'Your settings are up to date.',
+                          config.url
+                        );
+                      }
+                    }
+                  )
+                  .catch(catchError);
+              },
+            },
             {
               label: 'Backup Settings',
               click: () => {
