@@ -39,6 +39,11 @@ const checkForMissingSettings = () => {
   }
 };
 
+const catchError = err => {
+  console.trace(err);
+  notify(errorTitle, err);
+};
+
 exports.decorateMenu = menu => {
   checkForMissingSettings();
   return menu.map(
@@ -55,12 +60,7 @@ exports.decorateMenu = menu => {
               .then(
                 () => notify(`${title} 🔜`, 'Your settings have been saved.')
               )
-              .catch(
-                err => {
-                  console.trace(err);
-                  notify(errorTitle, err);
-                }
-              );
+              .catch(catchError);
           },
         },
         {
@@ -72,12 +72,7 @@ exports.decorateMenu = menu => {
               .then(
                 () => notify(`${title} 🔙`, 'Your settings have been restored.')
               )
-              .catch(
-                err => {
-                  console.trace(err);
-                  notify(errorTitle, err);
-                }
-              );
+              .catch(catchError);
           },
         }
       );
