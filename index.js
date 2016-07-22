@@ -1,23 +1,20 @@
 const getNotify = require('./lib/getNotify');
 const getGitConfig = require('./lib/getGitConfig');
-const updates = require('./lib/updates');
-const restore = require('./lib/restore');
-const backup = require('./lib/backup');
-const constants = require('./lib/constants');
-
-const { title, errorTitle, setupUrl } = constants;
+const getCommands = require('./lib/getCommands');
+const { title, errorTitle, setupUrl } = require('./lib/constants');
 
 let notify = () => console.error(`${errorTitle}: \`notify\` function not set.`);
 exports.onWindow = getNotify(notifier => {
   if (notifier) notify = notifier;
 });
 
-let config;
+let commands;
 const checkForMissingSettings = () => {
-  config = getGitConfig();
+  const config = getGitConfig();
   const { personalAccessToken, gistId } = config;
 
   if (personalAccessToken && gistId) {
+    commands = getCommands(config, notify);
     return true;
   } else {
     if (!personalAccessToken && !gistId) {
@@ -48,34 +45,8 @@ const checkForMissingSettings = () => {
   }
 };
 
-const catchError = err => {
-  console.trace(err);
-  notify(errorTitle, err);
-};
-
 exports.decorateMenu = menu => {
-  if (checkForMissingSettings()) {
-    updates(config)
-      .then(
-        isUpdated => {
-          if (isUpdated) {
-            notify(
-              `${title} ❗️`,
-              'Your settings need to be updated.',
-              config.url
-            );
-          } else {
-            notify(
-              `${title} 👍`,
-              'Your settings are up to date.',
-              config.url
-            );
-          }
-        }
-      )
-      .catch(catchError);
-  }
-
+  if (checkForMissingSettings()) commands.checkForUpdates();
   return menu.map(
     item => {
       if (item.label !== 'Plugins') return item;
@@ -89,54 +60,21 @@ exports.decorateMenu = menu => {
               label: 'Check for Updates',
               click: () => {
                 if (!checkForMissingSettings()) return;
-                updates(config)
-                  .then(
-                    isUpdated => {
-                      if (isUpdated) {
-                        notify(
-                          `${title} ❗️`,
-                          'Your settings need to be updated.',
-                          openWindow(config.url)
-                        );
-                      } else {
-                        notify(`${title} 👍`,
-                          'Your settings are up to date.',
-                          config.url
-                        );
-                      }
-                    }
-                  )
-                  .catch(catchError);
+                commands.checkForUpdates();
               },
             },
             {
               label: 'Backup Settings',
               click: () => {
                 if (!checkForMissingSettings()) return;
-                backup(config)
-                  .then(
-                    () => notify(
-                      `${title} 🔜`,
-                      'Your settings have been saved.',
-                      config.url
-                    )
-                  )
-                  .catch(catchError);
+                commands.tryToBackup();
               },
             },
             {
               label: 'Restore Settings',
               click: () => {
                 if (!checkForMissingSettings()) return;
-                restore(config)
-                  .then(
-                    () => notify(
-                      `${title} 🔙`,
-                      'Your settings have been restored.',
-                      config.url
-                    )
-                  )
-                  .catch(catchError);
+                commands.tryToRestore();
               },
             },
           ],
