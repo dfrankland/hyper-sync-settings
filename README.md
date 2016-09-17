@@ -51,6 +51,27 @@ Use the commands below in the menu:
     *   `Configuration`: Opens the
         `~/.hyperterm_plugins/.hyperterm-sync-settings.json` config file.
 
+## Configuration
+Add `syncSettings` in your `.hyperterm.js` config. The configuration below shows all existing configuration values in their default states.
+
+```javascript
+module.exports = {
+  config: {
+    // other configs...
+    syncSettings: {
+      quiet: false
+    },
+  },
+  // ...
+}
+```
+
+#### `config.syncSettings.quiet`
+* Type: boolean
+* Default: false
+
+ Mute the notification saying "Your settings are up to date". This will not hide any other notifications.
+
 ## Contribution
 
 Please help improve this package! There's lots of room for stability and new
