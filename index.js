@@ -1,7 +1,12 @@
+const { app } = require('electron');
 const getOpen = require('./lib/getOpen');
 const getGitConfig = require('./lib/getGitConfig');
 const getCommands = require('./lib/getCommands');
 const { title, errorTitle, setupUrl, paths, gistUrl } = require('./lib/constants');
+
+const defaultConfig = {
+  quiet: false
+}
 
 let open = {};
 exports.onWindow = win => {
@@ -10,12 +15,14 @@ exports.onWindow = win => {
 
 let commands;
 let config;
+let hypertermConfig;
 const checkForMissingSettings = () => {
   config = getGitConfig();
   const { personalAccessToken, gistId } = config;
+  hypertermConfig = app.config.getConfig().syncSettings || defaultConfig;
 
   if (personalAccessToken && gistId) {
-    commands = getCommands(config, open.notification);
+    commands = getCommands(config, open.notification, hypertermConfig);
     return true;
   } else {
     if (!personalAccessToken && !gistId) {
