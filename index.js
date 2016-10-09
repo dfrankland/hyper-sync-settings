@@ -15,14 +15,14 @@ exports.onWindow = win => {
 
 let commands;
 let config;
-let hypertermConfig;
+let hyperConfig;
 const checkForMissingSettings = () => {
   config = getGitConfig();
   const { personalAccessToken, gistId } = config;
-  hypertermConfig = app.config.getConfig().syncSettings || defaultConfig;
+  hyperConfig = app.config.getConfig().syncSettings || defaultConfig;
 
   if (personalAccessToken && gistId) {
-    commands = getCommands(config, open.notification, hypertermConfig);
+    commands = getCommands(config, open.notification, hyperConfig);
     return true;
   } else {
     if (!personalAccessToken && !gistId) {

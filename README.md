@@ -1,21 +1,21 @@
-# HyperTerm Sync Settings
+# Hyper Sync Settings
 
-> Sync HyperTerm settings with Github.
+> Sync Hyper settings with Github.
 
 ## Setup
 
 1.  Create a [new personal access token](https://github.com/settings/tokens/new)
     which has the `gist` scope. Save your token to `personalAccessToken` inside
-    `~/.hyperterm_plugins/.hyperterm-sync-settings.json`. Alternatively, set the
-    `HYPERTERM_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN` environmental variable using
+    `~/.hyper_plugins/.hyper-sync-settings.json`. Alternatively, set the
+    `HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN` environmental variable using
     this token.
 
 2.  Create a [new gist](https://gist.github.com/) and save it. Save your gist id
     (last part of the url after the username) to `gistId` inside
-    `~/.hyperterm_plugins/.hyperterm-sync-settings.json`. Alternatively, set the
-    `HYPERTERM_SYNC_SETTINGS_GIST_ID` environmental variable using this id.
+    `~/.hyper_plugins/.hyper-sync-settings.json`. Alternatively, set the
+    `HYPER_SYNC_SETTINGS_GIST_ID` environmental variable using this id.
 
-3.  Restart HyperTerm.
+3.  Restart Hyper.
 
 **Disclaimer:** Github Gists are by default **public**. If you don't want other
 people to easily find your gist (i.e. if you use certain packages, storing
@@ -34,13 +34,13 @@ Use the commands below in the menu:
 
 2.  `Plugins > Sync Settings > Backup Settings`
 
-    Copies your `~/.hyperterm.js` file to your local repository and pushes it to
+    Copies your `~/.hyper.js` file to your local repository and pushes it to
     Github.
 
 3.  `Plugins > Sync Settings > Restore Settings`
 
     Fast forwards local repo with all new commits from Github and copies the new
-    settings to your `~/.hyperterm.js` file.
+    settings to your `~/.hyper.js` file.
 
 4.  `Plugins > Sync Settings > Open >`
 
@@ -49,10 +49,10 @@ Use the commands below in the menu:
     *   `Repo`: Opens the local repo that is cloned from the Gist.
 
     *   `Configuration`: Opens the
-        `~/.hyperterm_plugins/.hyperterm-sync-settings.json` config file.
+        `~/.hyper_plugins/.hyper-sync-settings.json` config file.
 
 ## Configuration
-Add `syncSettings` in your `.hyperterm.js` config. The configuration below shows all existing configuration values in their default states.
+Add `syncSettings` in your `.hyper.js` config. The configuration below shows all existing configuration values in their default states.
 
 ```javascript
 module.exports = {
