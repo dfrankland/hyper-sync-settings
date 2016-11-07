@@ -1,6 +1,6 @@
 {
   "name": "hyper-sync-settings",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Sync Hyper settings with Github.",
   "main": "index.js",
   "scripts": {
