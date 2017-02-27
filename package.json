@@ -1,6 +1,6 @@
 {
   "name": "hyper-sync-settings",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0-alpha2",
   "description": "Sync Hyper settings with Github.",
   "keywords": [
     "hyperterm",
