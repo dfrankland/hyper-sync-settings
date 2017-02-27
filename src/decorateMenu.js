@@ -1,5 +1,6 @@
+import { app } from 'electron';
 import checkForMissingSettings from './lib/checkForMissingSettings';
-import { gistUrl, paths } from './constants';
+import { gistUrl, paths, possibleAccelerators } from './constants';
 
 export default (open, menu = []) => {
   const checkAndCallback = callback => () => {
@@ -9,6 +10,18 @@ export default (open, menu = []) => {
   };
 
   checkAndCallback(({ commands }) => commands.checkForUpdates());
+
+  const { accelerators: syncSettingsAccelerators = {} } = app.config.getConfig().syncSettings || {};
+  const accelerators = possibleAccelerators.reduce(
+    (allAccelerators, nextKey) => {
+      const accelerator = syncSettingsAccelerators[nextKey];
+      return {
+        ...allAccelerators,
+        [nextKey]: accelerator ? { accelerator } : {},
+      };
+    },
+    {},
+  );
 
   return menu.map(
     item => {
@@ -24,14 +37,17 @@ export default (open, menu = []) => {
               {
                 label: 'Check for Updates',
                 click: checkAndCallback(({ commands }) => commands.checkForUpdates()),
+                ...accelerators.checkForUpdates,
               },
               {
                 label: 'Backup Settings',
                 click: checkAndCallback(({ commands }) => commands.tryToBackup()),
+                ...accelerators.backupSettings,
               },
               {
                 label: 'Restore Settings',
                 click: checkAndCallback(({ commands }) => commands.tryToRestore()),
+                ...accelerators.restoreSettings,
               },
               {
                 label: 'Open',
@@ -42,14 +58,17 @@ export default (open, menu = []) => {
                     click: checkAndCallback(
                       ({ config }) => open.window(config ? config.url : gistUrl),
                     ),
+                    ...accelerators.openGist,
                   },
                   {
                     label: 'Repo',
                     click: () => open.item(paths.dirs.repo),
+                    ...accelerators.openRepo,
                   },
                   {
                     label: 'Configuration',
                     click: () => open.item(paths.files.config),
+                    ...accelerators.openConfiguration,
                   },
                 ],
               },

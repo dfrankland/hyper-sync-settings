@@ -4,13 +4,13 @@
 
 ## Setup
 
-1.  Create a [new personal access token](https://github.com/settings/tokens/new)
-    which has the `gist` scope. Save your token to `personalAccessToken` inside
+1.  Create a [new personal access token][1] which has the `gist` scope. Save
+    your token to `personalAccessToken` inside
     `~/.hyper_plugins/.hyper-sync-settings.json`. Alternatively, set the
     `HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN` environmental variable using
     this token.
 
-2.  Create a [new gist](https://gist.github.com/) and save it. Save your gist id
+2.  Create a [new gist][2] and save it. Save your gist id
     (last part of the url after the username) to `gistId` inside
     `~/.hyper_plugins/.hyper-sync-settings.json`. Alternatively, set the
     `HYPER_SYNC_SETTINGS_GIST_ID` environmental variable using this id.
@@ -24,7 +24,7 @@ auth-tokens, a malicious party could abuse them), you should make sure to
 
 ## How to use
 
-![alt demo](http://i.giphy.com/9CNA0ceu5iuoU.gif)
+![alt demo][3]
 
 Use the commands below in the menu:
 
@@ -52,14 +52,18 @@ Use the commands below in the menu:
         `~/.hyper_plugins/.hyper-sync-settings.json` config file.
 
 ## Configuration
-Add `syncSettings` in your `.hyper.js` config. The configuration below shows all existing configuration values in their default states.
+Add `syncSettings` in your `.hyper.js` config. The configuration below shows all
+existing configuration values in their default states.
 
-```javascript
+```js
 module.exports = {
   config: {
     // other configs...
     syncSettings: {
-      quiet: false
+      quiet: false,
+      accelerators: {
+        checkForUpdates: 'CmdOrCtrl+8'
+      }
     },
   },
   // ...
@@ -67,10 +71,26 @@ module.exports = {
 ```
 
 #### `config.syncSettings.quiet`
-* Type: boolean
-* Default: false
+*   Type: boolean
+*   Default: false
 
- Mute the notification saying "Your settings are up to date". This will not hide any other notifications.
+Mute the notification saying "Your settings are up to date". This will not hide
+any other notifications.
+
+#### `config.syncSettings.accelerators`
+*   Type: object
+*   Default: {}
+
+Add configurable keyboard shortcuts to each of the menu options. The value of
+each of the properties should be a valid [Electron Accelerator][4]. The available
+options are:
+
+*   `checkForUpdates`
+*   `backupSettings`
+*   `restoreSettings`
+*   `openGist`
+*   `openRepo`
+*   `openConfiguration`
 
 ## Contribution
 
@@ -80,4 +100,10 @@ features to be made, so I would love if you could help improve it :)
 ## Credit
 
 Credit where credit's due; the idea of this comes directly from
-[`atom-sync-settings`](https://github.com/atom-community/sync-settings).
+[`atom-sync-settings`][5].
+
+[1]: https://github.com/settings/tokens/new
+[2]: https://gist.github.com/
+[3]: http://i.giphy.com/9CNA0ceu5iuoU.gif
+[4]: https://github.com/electron/electron/blob/master/docs/api/accelerator.md
+[5]: https://github.com/atom-community/sync-settings

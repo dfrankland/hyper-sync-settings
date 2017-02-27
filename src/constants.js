@@ -20,3 +20,12 @@ export const paths = {
     restore: resolvePath(home, './.hyper.js'),
   },
 };
+
+export const possibleAccelerators = [
+  'checkForUpdates',
+  'backupSettings',
+  'restoreSettings',
+  'openGist',
+  'openRepo',
+  'openConfiguration',
+];
