@@ -15,12 +15,6 @@ export default async ({ repoPromise, remoteUrl }) => {
   await new Promise(
     resolve => {
       simpleGit(paths.dirs.repo)
-        .removeRemote(
-          'origin',
-          () => undefined,
-        );
-
-      simpleGit(paths.dirs.repo)
         .addRemote(
           'origin',
           remoteUrl,
