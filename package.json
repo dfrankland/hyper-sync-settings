@@ -49,7 +49,7 @@
       [
         "env",
         {
-          "tagets": {
+          "targets": {
             "electron": 1.4,
             "node": 6
           }
