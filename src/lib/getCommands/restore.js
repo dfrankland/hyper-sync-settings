@@ -19,5 +19,7 @@ export default async ({ repoPromise }) => {
         .then(resolve)
     ),
   );
-  await fs.copyAsync(backupFile, restoreFile);
+  await fs.ensureFileAsync(restoreFile);
+  await fs.outputFileAsync(restoreFile,
+    await fs.readFileAsync(backupFile), { flag: 'r+' });
 };
