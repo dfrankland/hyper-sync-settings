@@ -32,7 +32,6 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "bluebird": "^3.4.1",
-    "electron": "^1.4.15",
     "fs-extra": "^1.0.0",
     "moment": "^2.15.2",
     "rimraf": "^2.6.1",
@@ -49,8 +48,7 @@
       [
         "env",
         {
-          "tagets": {
-            "electron": 1.4,
+          "targets": {
             "node": 6
           }
         }
