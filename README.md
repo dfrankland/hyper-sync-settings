@@ -102,6 +102,11 @@ features to be made, so I would love if you could help improve it :)
 Credit where credit's due; the idea of this comes directly from
 [`atom-sync-settings`][5].
 
+## Contributors
+
+Thanks go out to [@rfgamaral](https://github.com/rfgamaral) for all the help
+getting this working on Hyper 2.0 and fixing stuff on Windows!
+
 [1]: https://github.com/settings/tokens/new
 [2]: https://gist.github.com/
 [3]: http://i.giphy.com/9CNA0ceu5iuoU.gif
