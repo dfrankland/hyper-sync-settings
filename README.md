@@ -2,6 +2,25 @@
 
 > Sync Hyper settings with Github.
 
+## Installation
+
+1. Open your Hyper settings (i.e., `.hyper.js`)
+
+2. Add `hyper-sync-settings` to `plugins` section
+
+```js
+// Example
+module.exports = {
+  ...,
+  plugins: [
+    'hyper-sync-settings'
+  ],
+  ...
+}
+```
+
+3. Save and restart Hyper!
+
 ## Setup
 
 1.  Create a [new personal access token][1] which has the `gist` scope. Save
