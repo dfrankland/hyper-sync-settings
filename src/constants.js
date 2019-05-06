@@ -17,7 +17,7 @@ const home =
     ? join(process.env.XDG_CONFIG_HOME, 'hyper')
     : process.platform == 'win32' ? app.getPath('userData') : homedir();
 
-const repo = resolvePath(applicationDirectory, './.hyper_plugins/.hyper-sync-settings');
+const repo = resolvePath(home, './.hyper_plugins/.hyper-sync-settings');
 
 export const paths = {
   dirs: { home, repo },
