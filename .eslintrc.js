@@ -5,6 +5,7 @@ const typescriptEslintPrettier = require('eslint-config-prettier/@typescript-esl
 module.exports = {
   env: {
     node: true,
+    browser: true,
   },
   parser: 'babel-eslint',
   extends: [
