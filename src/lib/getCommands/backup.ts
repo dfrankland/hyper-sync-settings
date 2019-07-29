@@ -5,6 +5,7 @@ import { GitConfig } from '../getGitConfig';
 
 export default async ({ repoPromise, remoteUrl }: GitConfig): Promise<void> => {
   if (!remoteUrl) {
+    // eslint-disable-next-line no-console
     console.error('No remote URL!');
     return;
   }
