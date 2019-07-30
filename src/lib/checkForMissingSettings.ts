@@ -2,7 +2,7 @@ import { app, App } from 'electron';
 import { ERROR_TITLE, SETUP_URL, SyncSettings } from '../constants';
 import getGitConfig, { GitConfig } from './getGitConfig';
 import getCommands, { Commands } from './getCommands';
-import { Open } from './getOpen';
+import notify from './notify';
 
 export interface ConfigAndCommands {
   config: GitConfig;
@@ -13,9 +13,14 @@ const hyperApp: App & {
   config?: { getConfig?: () => { syncSettings?: SyncSettings } };
 } = app;
 
-export default (open: Open): null | ConfigAndCommands => {
-  const notify = (message: string): void | string =>
-    open.notification(ERROR_TITLE, message, SETUP_URL);
+export default (): null | ConfigAndCommands => {
+  const notifyErr = (message: string): void | string =>
+    notify({
+      title: ERROR_TITLE,
+      body: message,
+      url: SETUP_URL,
+      level: 'error',
+    });
 
   if (!hyperApp.config || typeof hyperApp.config.getConfig !== 'function') {
     throw new Error(
@@ -30,21 +35,21 @@ export default (open: Open): null | ConfigAndCommands => {
   };
 
   if (personalAccessToken && gistId) {
-    const commands = getCommands(config, open, hyperConfig);
+    const commands = getCommands(config, hyperConfig);
     return { config, commands };
   }
 
   if (!personalAccessToken && !gistId) {
-    notify('Settings not found! Click for more info.');
+    notifyErr('Settings not found! Click for more info.');
     return null;
   }
 
   if (!personalAccessToken) {
-    notify('`personalAccessToken` not set! Click for more info.');
+    notifyErr('`personalAccessToken` not set! Click for more info.');
   }
 
   if (!gistId) {
-    notify('`gistId` not set! Click for more info.');
+    notifyErr('`gistId` not set! Click for more info.');
   }
 
   return null;

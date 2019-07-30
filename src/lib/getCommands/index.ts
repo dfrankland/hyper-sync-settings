@@ -3,7 +3,7 @@ import updates from './updates';
 import restore from './restore';
 import backup from './backup';
 import { GitConfig } from '../getGitConfig';
-import { Open } from '../getOpen';
+import notify from '../notify';
 
 export interface Commands {
   checkForUpdates: () => Promise<void>;
@@ -11,36 +11,37 @@ export interface Commands {
   tryToRestore: () => Promise<void>;
 }
 
-export default (
-  config: GitConfig,
-  open: Open,
-  { quiet }: SyncSettings,
-): Commands => {
+export default (config: GitConfig, { quiet }: SyncSettings): Commands => {
   const catchError = (err: Error): void => {
-    open.notification(ERROR_TITLE, err.message);
+    notify({ title: ERROR_TITLE, body: err.message, level: 'error' });
     throw err;
   };
 
-  const notify = (emoji: string, message: string): void | string =>
-    open.notification(`${TITLE} ${emoji}`, message, config.url);
+  const notifyMsg = (emoji: string, message: string): void | string =>
+    notify({
+      title: `${TITLE} ${emoji}`,
+      body: message,
+      url: config.url,
+      level: 'info',
+    });
 
   return {
     checkForUpdates: async (): Promise<void> => {
       const isUpdated = await updates(config).catch(catchError);
 
       if (isUpdated) {
-        notify('❗️', 'Your settings need to be updated.');
+        notifyMsg('❗️', 'Your settings need to be updated.');
       } else if (!quiet) {
-        notify('👍', 'Your settings are up to date.');
+        notifyMsg('👍', 'Your settings are up to date.');
       }
     },
     tryToBackup: async (): Promise<void> => {
       await backup(config).catch(catchError);
-      notify('🔜', 'Your settings have been saved.');
+      notifyMsg('🔜', 'Your settings have been saved.');
     },
     tryToRestore: async (): Promise<void> => {
       await restore(config).catch(catchError);
-      notify('🔙', 'Your settings have been restored.');
+      notifyMsg('🔙', 'Your settings have been restored.');
     },
   };
 };

@@ -1,8 +1,8 @@
-import { MenuItemConstructorOptions } from 'electron';
+import { MenuItemConstructorOptions, shell } from 'electron';
+import { ensureDir } from 'fs-extra';
 import checkForMissingSettings, {
   ConfigAndCommands,
 } from './lib/checkForMissingSettings';
-import { Open } from './lib/getOpen';
 import {
   GIST_URL,
   DIR_REPO,
@@ -18,13 +18,12 @@ type ValueOf<T> = T[keyof T];
 const defaultAccelerators: Partial<SyncSettings['accelerators']> = {};
 
 export default (
-  open: Open,
   menu: MenuItemConstructorOptions[] = [],
 ): MenuItemConstructorOptions[] => {
   const checkAndCallback = (
     callback: (gitConfig: ConfigAndCommands) => void,
-  ): (() => void) => (): void => {
-    const commandsAndConfig = checkForMissingSettings(open);
+  ): NonNullable<MenuItemConstructorOptions['click']> => (): void => {
+    const commandsAndConfig = checkForMissingSettings();
     if (commandsAndConfig === null) return;
     callback(commandsAndConfig);
   };
@@ -65,7 +64,7 @@ export default (
     {},
   );
 
-  return menu.map(
+  const newMenu = menu.map(
     (item: MenuItemConstructorOptions): MenuItemConstructorOptions => {
       if (item.label !== 'Plugins') return item;
       return {
@@ -109,34 +108,37 @@ export default (
                 submenu: [
                   {
                     label: 'Gist',
-                    click: checkAndCallback(
-                      ({ config }: ConfigAndCommands): void => {
-                        if (config.url) {
-                          open.window(config.url);
-                          return;
-                        }
+                    click: (...args): void => {
+                      checkAndCallback(
+                        ({ config }: ConfigAndCommands): void => {
+                          if (config.url) {
+                            shell.openExternal(config.url);
+                            return;
+                          }
 
-                        if (config.gistId) {
-                          open.window(GIST_URL(config.gistId));
-                          return;
-                        }
+                          if (config.gistId) {
+                            shell.openExternal(GIST_URL(config.gistId));
+                            return;
+                          }
 
-                        open.window('https://gist.github.com');
-                      },
-                    ),
+                          shell.openExternal('https://gist.github.com');
+                        },
+                      )(...args);
+                    },
                     ...accelerators.openGist,
                   },
                   {
                     label: 'Repo',
-                    click: (): void => {
-                      open.item(DIR_REPO);
+                    click: async (): Promise<void> => {
+                      await ensureDir(DIR_REPO);
+                      shell.openItem(DIR_REPO);
                     },
                     ...accelerators.openRepo,
                   },
                   {
                     label: 'Configuration',
                     click: (): void => {
-                      open.item(FILE_CONFIG);
+                      shell.openItem(FILE_CONFIG);
                     },
                     ...accelerators.openConfiguration,
                   },
@@ -148,4 +150,6 @@ export default (
       };
     },
   );
+
+  return newMenu;
 };

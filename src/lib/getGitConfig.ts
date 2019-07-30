@@ -1,5 +1,5 @@
 import { GitProcess } from 'dugite';
-import { copySync, ensureDir } from 'fs-extra';
+import { copySync, ensureDir, readJsonSync, pathExistsSync } from 'fs-extra';
 import {
   FILE_CONFIG,
   FILE_CONFIG_TEMPLATE,
@@ -7,47 +7,83 @@ import {
   ERROR_TITLE,
   DIR_REPO,
 } from '../constants';
+import notify from './notify';
 
-export interface GitConfig {
-  url?: string;
-  remoteUrl?: string;
-  repoPromise?: Promise<void>;
-  personalAccessToken?: string;
-  gistId?: string;
+export interface IdAndToken {
+  personalAccessToken: string;
+  gistId: string;
 }
 
-let config: GitConfig = {};
+export interface GitConfig extends IdAndToken {
+  url: string;
+  remoteUrl: string;
+  repoPromise: Promise<void>;
+}
 
-const {
-  HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN,
-  HYPER_SYNC_SETTINGS_GIST_ID,
-} = process.env;
+const getIdAndToken = (): IdAndToken => {
+  let config: IdAndToken = {
+    personalAccessToken: '',
+    gistId: '',
+  };
 
-if (
-  !HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN ||
-  !HYPER_SYNC_SETTINGS_GIST_ID
-) {
-  try {
-    // eslint-disable-next-line import/no-dynamic-require, global-require
-    config = require(FILE_CONFIG);
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error(
-      `hyper-sync-settings: error 🔥 no config file found in \`${FILE_CONFIG}\`, creating one`,
-    );
-    copySync(FILE_CONFIG_TEMPLATE, FILE_CONFIG);
+  const {
+    HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN,
+    HYPER_SYNC_SETTINGS_GIST_ID,
+  } = process.env;
+
+  if (
+    !HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN ||
+    !HYPER_SYNC_SETTINGS_GIST_ID
+  ) {
+    try {
+      if (!pathExistsSync(FILE_CONFIG)) {
+        notify({
+          title: ERROR_TITLE,
+          body: `no config file found in \`${FILE_CONFIG}\`, creating one`,
+          level: 'error',
+        });
+        copySync(FILE_CONFIG_TEMPLATE, FILE_CONFIG);
+      } else {
+        try {
+          config = readJsonSync(FILE_CONFIG);
+        } catch (err) {
+          notify({
+            title: ERROR_TITLE,
+            body: `could not read \`${FILE_CONFIG}\`, maybe the JSON is not valid?`,
+            level: 'error',
+          });
+        }
+      }
+    } catch (err) {
+      notify({
+        title: ERROR_TITLE,
+        body: `could not check in \`${FILE_CONFIG}\` for config file`,
+        level: 'error',
+      });
+    }
   }
-}
 
-if (HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN) {
-  config.personalAccessToken = HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN;
-}
+  if (HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN) {
+    config.personalAccessToken = HYPER_SYNC_SETTINGS_PERSONAL_ACCESS_TOKEN;
+  }
 
-if (HYPER_SYNC_SETTINGS_GIST_ID) {
-  config.gistId = HYPER_SYNC_SETTINGS_GIST_ID;
-}
+  if (HYPER_SYNC_SETTINGS_GIST_ID) {
+    config.gistId = HYPER_SYNC_SETTINGS_GIST_ID;
+  }
+
+  return config;
+};
+
+getIdAndToken();
 
 export default (): GitConfig => {
+  const config: GitConfig = {
+    ...getIdAndToken(),
+    url: '',
+    remoteUrl: '',
+    repoPromise: Promise.resolve(),
+  };
+
   const { personalAccessToken, gistId } = config;
 
   if (!personalAccessToken || !gistId) return config;

@@ -1,12 +1,4 @@
-import { BrowserWindow, MenuItemConstructorOptions } from 'electron';
-import getOpen, { Open } from './lib/getOpen';
-import dm from './decorateMenu';
+import decorateMenu from './decorateMenu';
 
-let open: Open;
-export const onWindow = (win: BrowserWindow): void => {
-  open = getOpen(win);
-};
-
-export const decorateMenu = (
-  menu: MenuItemConstructorOptions[],
-): MenuItemConstructorOptions[] => dm(open, menu);
+// eslint-disable-next-line import/prefer-default-export
+export { decorateMenu };
