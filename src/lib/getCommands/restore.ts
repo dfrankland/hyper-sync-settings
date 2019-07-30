@@ -8,6 +8,6 @@ export default async ({ repoPromise }: GitConfig): Promise<void> => {
   await GitProcess.exec(['fetch'], DIR_REPO);
   await GitProcess.exec(['merge', 'origin/master', 'master'], DIR_REPO);
   await ensureFile(FILE_RESTORE);
-  const file = readFile(FILE_BACKUP);
+  const file = await readFile(FILE_BACKUP);
   await outputFile(FILE_RESTORE, file, { flag: 'r+' });
 };
