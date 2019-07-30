@@ -1,6 +1,6 @@
 {
   "name": "hyper-sync-settings",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Sync Hyper settings with Github.",
   "keywords": [
     "hyperterm",
