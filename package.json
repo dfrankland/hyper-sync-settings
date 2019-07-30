@@ -25,38 +25,39 @@
     "dist"
   ],
   "scripts": {
-    "prebuild": "rimraf ./dist",
-    "build": "babel ./src --out-dir ./dist --source-maps --copy-files",
-    "prepublishOnly": "npm run build"
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build",
+    "lint": "eslint --ext .ts --ext .js .",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "bluebird": "^3.5.1",
-    "fs-extra": "^6.0.1",
-    "moment": "^2.22.1",
-    "rimraf": "^2.6.2",
-    "simple-git": "^1.92.0"
+    "dugite": "^1.87.0",
+    "fs-extra": "^8.1.0",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-stage-0": "^6.24.1"
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/fs-extra": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "babel-eslint": "^10.0.2",
+    "electron": "^5.0.8",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.2.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-prettier": "^3.1.0",
+    "prettier": "^1.18.2",
+    "rollup": "^1.17.0",
+    "rollup-plugin-auto-external": "^2.0.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "typescript": "^3.5.3"
   },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "targets": {
-            "node": 6
-          }
-        }
-      ],
-      "stage-0"
-    ],
-    "plugins": [
-      "transform-runtime"
-    ]
+  "peerDependencies": {
+    "electron": "*"
   }
 }

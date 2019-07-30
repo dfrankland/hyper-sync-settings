@@ -1,0 +1,4 @@
+/dist
+!.eslintrc.js
+!.babelrc.js
+!.prettierrc.js
