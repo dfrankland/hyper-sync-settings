@@ -10,7 +10,7 @@ const getLastCommit = async (): Promise<{ hash: string; date: Moment }> => {
       '-n',
       '1',
       '--date=iso',
-      '--pretty=format:{ "commit": "%H", "date": "%ad" }',
+      '--pretty=format:{ "hash": "%H", "date": "%ad" }',
     ],
     DIR_REPO,
   );
