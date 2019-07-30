@@ -13,7 +13,7 @@ const hyperApp: App & {
   config?: { getConfig?: () => { syncSettings?: SyncSettings } };
 } = app;
 
-export default (): null | ConfigAndCommands => {
+export default async (): Promise<null | ConfigAndCommands> => {
   const notifyErr = (message: string): void | string =>
     notify({
       title: ERROR_TITLE,
@@ -28,7 +28,7 @@ export default (): null | ConfigAndCommands => {
     );
   }
 
-  const config = getGitConfig();
+  const config = await getGitConfig();
   const { personalAccessToken, gistId } = config;
   const hyperConfig = hyperApp.config.getConfig().syncSettings || {
     quiet: false,

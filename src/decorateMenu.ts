@@ -22,8 +22,10 @@ export default (
 ): MenuItemConstructorOptions[] => {
   const checkAndCallback = (
     callback: (gitConfig: ConfigAndCommands) => void,
-  ): NonNullable<MenuItemConstructorOptions['click']> => (): void => {
-    const commandsAndConfig = checkForMissingSettings();
+  ): NonNullable<MenuItemConstructorOptions['click']> => async (): Promise<
+    void
+  > => {
+    const commandsAndConfig = await checkForMissingSettings();
     if (commandsAndConfig === null) return;
     callback(commandsAndConfig);
   };

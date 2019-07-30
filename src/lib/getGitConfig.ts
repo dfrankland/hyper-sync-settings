@@ -1,5 +1,5 @@
 import { GitProcess } from 'dugite';
-import { copySync, ensureDir, readJsonSync, pathExistsSync } from 'fs-extra';
+import { copyFile, ensureDir, readJson, pathExists } from 'fs-extra';
 import {
   FILE_CONFIG,
   FILE_CONFIG_TEMPLATE,
@@ -20,7 +20,7 @@ export interface GitConfig extends IdAndToken {
   repoPromise: Promise<void>;
 }
 
-const getIdAndToken = (): IdAndToken => {
+const getIdAndToken = async (): Promise<IdAndToken> => {
   let config: IdAndToken = {
     personalAccessToken: '',
     gistId: '',
@@ -36,16 +36,16 @@ const getIdAndToken = (): IdAndToken => {
     !HYPER_SYNC_SETTINGS_GIST_ID
   ) {
     try {
-      if (!pathExistsSync(FILE_CONFIG)) {
+      if (!(await pathExists(FILE_CONFIG))) {
         notify({
           title: ERROR_TITLE,
           body: `no config file found in \`${FILE_CONFIG}\`, creating one`,
           level: 'error',
         });
-        copySync(FILE_CONFIG_TEMPLATE, FILE_CONFIG);
+        await copyFile(FILE_CONFIG_TEMPLATE, FILE_CONFIG);
       } else {
         try {
-          config = readJsonSync(FILE_CONFIG);
+          config = await readJson(FILE_CONFIG);
         } catch (err) {
           notify({
             title: ERROR_TITLE,
@@ -76,9 +76,9 @@ const getIdAndToken = (): IdAndToken => {
 
 getIdAndToken();
 
-export default (): GitConfig => {
+export default async (): Promise<GitConfig> => {
   const config: GitConfig = {
-    ...getIdAndToken(),
+    ...(await getIdAndToken()),
     url: '',
     remoteUrl: '',
     repoPromise: Promise.resolve(),
