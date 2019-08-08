@@ -23,33 +23,27 @@ export const SETUP_URL =
 
 // If the user defines XDG_CONFIG_HOME they definitely want their config there,
 // otherwise use the home directory in linux/mac and userdata in windows
-export const DIR_HOME = ((): string => {
+export const DIR_HOME = (): string => {
   if (typeof process.env.XDG_CONFIG_HOME !== 'undefined') {
     return resolvePath(process.env.XDG_CONFIG_HOME, 'hyper');
   }
 
   return process.platform === 'win32' ? app.getPath('userData') : homedir();
-})();
+};
 
-export const DIR_REPO = resolvePath(
-  DIR_HOME,
-  '.hyper_plugins',
-  '.hyper-sync-settings',
-);
+export const DIR_REPO = (): string =>
+  resolvePath(DIR_HOME(), '.hyper_plugins', '.hyper-sync-settings');
 
-export const FILE_CONFIG = resolvePath(
-  DIR_HOME,
-  '.hyper_plugins',
-  '.hyper-sync-settings.json',
-);
+export const FILE_CONFIG = (): string =>
+  resolvePath(DIR_HOME(), '.hyper_plugins', '.hyper-sync-settings.json');
 
 export const FILE_CONFIG_TEMPLATE = resolvePath(
   __dirname,
   'config.default.json',
 );
-export const FILE_BACKUP = resolvePath(DIR_REPO, '.hyper.js');
+export const FILE_BACKUP = (): string => resolvePath(DIR_REPO(), '.hyper.js');
 
-export const FILE_RESTORE = resolvePath(DIR_HOME, '.hyper.js');
+export const FILE_RESTORE = (): string => resolvePath(DIR_HOME(), '.hyper.js');
 
 export type Accelerators =
   | 'checkForUpdates'

@@ -36,20 +36,20 @@ const getIdAndToken = async (): Promise<IdAndToken> => {
     !HYPER_SYNC_SETTINGS_GIST_ID
   ) {
     try {
-      if (!(await pathExists(FILE_CONFIG))) {
+      if (!(await pathExists(FILE_CONFIG()))) {
         notify({
           title: ERROR_TITLE,
-          body: `no config file found in \`${FILE_CONFIG}\`, creating one`,
+          body: `no config file found in \`${FILE_CONFIG()}\`, creating one`,
           level: 'error',
         });
-        await copyFile(FILE_CONFIG_TEMPLATE, FILE_CONFIG);
+        await copyFile(FILE_CONFIG_TEMPLATE, FILE_CONFIG());
       } else {
         try {
-          config = await readJson(FILE_CONFIG);
+          config = await readJson(FILE_CONFIG());
         } catch (err) {
           notify({
             title: ERROR_TITLE,
-            body: `could not read \`${FILE_CONFIG}\`, maybe the JSON is not valid?`,
+            body: `could not read \`${FILE_CONFIG()}\`, maybe the JSON is not valid?`,
             level: 'error',
           });
         }
@@ -57,7 +57,7 @@ const getIdAndToken = async (): Promise<IdAndToken> => {
     } catch (err) {
       notify({
         title: ERROR_TITLE,
-        body: `could not check in \`${FILE_CONFIG}\` for config file`,
+        body: `could not check in \`${FILE_CONFIG()}\` for config file`,
         level: 'error',
       });
     }
@@ -74,8 +74,6 @@ const getIdAndToken = async (): Promise<IdAndToken> => {
   return config;
 };
 
-getIdAndToken();
-
 export default async (): Promise<GitConfig> => {
   const config: GitConfig = {
     ...(await getIdAndToken()),
@@ -91,9 +89,9 @@ export default async (): Promise<GitConfig> => {
   const remoteUrl = GIST_URL(gistId, personalAccessToken);
 
   const repoPromise = (async (): Promise<void> => {
-    await ensureDir(DIR_REPO);
+    await ensureDir(DIR_REPO());
     try {
-      await GitProcess.exec(['clone', remoteUrl, '.'], DIR_REPO);
+      await GitProcess.exec(['clone', remoteUrl, '.'], DIR_REPO());
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error(`${ERROR_TITLE} ${err.message}`);

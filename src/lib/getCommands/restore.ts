@@ -5,8 +5,8 @@ import { GitConfig } from '../getGitConfig';
 
 export default async ({ repoPromise }: GitConfig): Promise<void> => {
   await repoPromise;
-  await GitProcess.exec(['fetch'], DIR_REPO);
-  await GitProcess.exec(['merge', 'origin/master', 'master'], DIR_REPO);
-  await ensureFile(FILE_RESTORE);
-  await copyFile(FILE_BACKUP, FILE_RESTORE);
+  await GitProcess.exec(['fetch'], DIR_REPO());
+  await GitProcess.exec(['merge', 'origin/master', 'master'], DIR_REPO());
+  await ensureFile(FILE_RESTORE());
+  await copyFile(FILE_BACKUP(), FILE_RESTORE());
 };

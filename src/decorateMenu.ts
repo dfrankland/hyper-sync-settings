@@ -20,6 +20,12 @@ const defaultAccelerators: Partial<SyncSettings['accelerators']> = {};
 export default (
   menu: MenuItemConstructorOptions[] = [],
 ): MenuItemConstructorOptions[] => {
+  // Proactively notify about missing settings
+  (async (): Promise<void> => {
+    await hyperApp.whenReady();
+    checkForMissingSettings();
+  })();
+
   const checkAndCallback = (
     callback: (gitConfig: ConfigAndCommands) => void,
   ): NonNullable<MenuItemConstructorOptions['click']> => async (): Promise<
@@ -132,15 +138,15 @@ export default (
                   {
                     label: 'Repo',
                     click: async (): Promise<void> => {
-                      await ensureDir(DIR_REPO);
-                      shell.openItem(DIR_REPO);
+                      await ensureDir(DIR_REPO());
+                      shell.openItem(DIR_REPO());
                     },
                     ...accelerators.openRepo,
                   },
                   {
                     label: 'Configuration',
                     click: (): void => {
-                      shell.openItem(FILE_CONFIG);
+                      shell.openItem(FILE_CONFIG());
                     },
                     ...accelerators.openConfiguration,
                   },
