@@ -11,7 +11,15 @@ export type HyperApp = App & {
   config: { getConfig: () => { syncSettings?: SyncSettings } };
 };
 
-export const hyperApp = app as HyperApp;
+export const getHyperApp = (): HyperApp => {
+  if (!app) {
+    throw new Error('electron app is undefined');
+  }
+  (async (): Promise<void> => {
+    await app.whenReady();
+  })();
+  return app as HyperApp;
+};
 
 export const GIST_URL = (gistId: string, token?: string): string =>
   `https://${token ? `${token}@` : ''}gist.github.com/${gistId}.git`;
@@ -28,7 +36,9 @@ export const DIR_HOME = (): string => {
     return resolvePath(process.env.XDG_CONFIG_HOME, 'hyper');
   }
 
-  return process.platform === 'win32' ? app.getPath('userData') : homedir();
+  return process.platform === 'win32'
+    ? getHyperApp().getPath('userData')
+    : homedir();
 };
 
 export const DIR_REPO = (): string =>
@@ -60,7 +70,7 @@ export const POSSIBLE_ACCELERATORS: [
   'openGist',
   'openRepo',
   // eslint-disable-next-line prettier/prettier
-  'openConfiguration'
+  'openConfiguration',
 ] = [
   'checkForUpdates',
   'backupSettings',

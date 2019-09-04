@@ -1,4 +1,5 @@
-import { app, Notification, shell } from 'electron';
+import { Notification, shell } from 'electron';
+import { getHyperApp } from '../constants';
 
 export interface NotifyOptions {
   title: string;
@@ -11,7 +12,11 @@ export default ({ title, body, url, level = 'debug' }: NotifyOptions): void => {
   // eslint-disable-next-line no-console
   console[level]([title, body, url].filter(Boolean).join('\n'));
 
-  if (!app || !app.isReady()) return;
+  if (!getHyperApp() || !getHyperApp().isReady()) {
+    // eslint-disable-next-line no-console
+    console.error('App is undefined or net yet ready');
+    return;
+  }
 
   const notification = new Notification({
     title,
