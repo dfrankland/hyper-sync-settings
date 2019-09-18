@@ -1,6 +1,6 @@
 {
   "name": "hyper-sync-settings",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Sync Hyper settings with Github.",
   "keywords": [
     "hyperterm",
@@ -27,6 +27,7 @@
   "scripts": {
     "build": "rollup -c",
     "prepublishOnly": "npm run build",
+    "pretty": "prettier --write ./**/*.{js,ts}",
     "lint": "eslint --ext .ts --ext .js .",
     "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },

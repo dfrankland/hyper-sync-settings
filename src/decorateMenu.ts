@@ -10,7 +10,7 @@ import {
   POSSIBLE_ACCELERATORS,
   Accelerators,
   SyncSettings,
-  hyperApp,
+  getHyperApp,
 } from './constants';
 
 type ValueOf<T> = T[keyof T];
@@ -22,7 +22,7 @@ export default (
 ): MenuItemConstructorOptions[] => {
   // Proactively notify about missing settings
   (async (): Promise<void> => {
-    await hyperApp.whenReady();
+    await getHyperApp().whenReady();
     checkForMissingSettings();
   })();
 
@@ -44,7 +44,7 @@ export default (
     syncSettings: {
       accelerators: syncSettingsAccelerators = defaultAccelerators,
     } = {},
-  } = hyperApp.config.getConfig();
+  } = getHyperApp().config.getConfig();
 
   const accelerators: Partial<
     Record<Accelerators, { accelerator: ValueOf<SyncSettings['accelerators']> }>
