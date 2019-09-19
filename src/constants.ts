@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { app, App } from 'electron';
 import { homedir } from 'os';
 import { resolve as resolvePath } from 'path';

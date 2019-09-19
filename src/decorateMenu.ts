@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { MenuItemConstructorOptions, shell } from 'electron';
 import { ensureDir } from 'fs-extra';
 import checkForMissingSettings, {
