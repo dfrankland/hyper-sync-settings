@@ -21,4 +21,5 @@ export default {
     }),
     autoExternal(),
   ],
+  external: ['electron'],
 };
