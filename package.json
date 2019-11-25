@@ -22,7 +22,9 @@
   "homepage": "https://github.com/dfrankland/hyper-sync-settings#readme",
   "main": "dist/index.js",
   "files": [
-    "dist"
+    "dist",
+    "postinstall.ts",
+    ".babelrc.js"
   ],
   "scripts": {
     "build": "rollup -c",
