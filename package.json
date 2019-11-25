@@ -33,15 +33,15 @@
     "postinstall": "babel-node --extensions='.ts' ./postinstall.ts"
   },
   "dependencies": {
+    "@babel/core": "^7.7.4",
+    "@babel/node": "^7.7.4",
+    "@babel/preset-env": "^7.7.4",
+    "@babel/preset-typescript": "^7.7.4",
     "dugite": "^1.87.3",
     "fs-extra": "^8.1.0",
     "moment": "^2.24.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.7.4",
-    "@babel/node": "^7.7.4",
-    "@babel/preset-env": "^7.7.4",
-    "@babel/preset-typescript": "^7.7.4",
     "@types/fs-extra": "^8.0.1",
     "@typescript-eslint/eslint-plugin": "^2.3.0",
     "@typescript-eslint/parser": "^2.8.0",
