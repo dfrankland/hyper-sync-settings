@@ -47,9 +47,10 @@ export default (
     } = {},
   } = getHyperApp().config.getConfig();
 
-  const accelerators: Partial<
-    Record<Accelerators, { accelerator: ValueOf<SyncSettings['accelerators']> }>
-  > = POSSIBLE_ACCELERATORS.reduce(
+  const accelerators: Partial<Record<
+    Accelerators,
+    { accelerator: ValueOf<SyncSettings['accelerators']> }
+  >> = POSSIBLE_ACCELERATORS.reduce(
     (
       allAccelerators: Partial<
         Record<
