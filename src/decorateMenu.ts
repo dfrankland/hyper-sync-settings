@@ -76,7 +76,7 @@ export default (
 
   const newMenu = menu.map(
     (item: MenuItemConstructorOptions): MenuItemConstructorOptions => {
-      if (item.label !== 'Plugins') return item;
+      if (item.label !== 'Tools') return item;
       return {
         ...item,
         submenu: [
